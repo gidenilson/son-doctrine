@@ -4,7 +4,7 @@ namespace Code\Sistema\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Code\Sistema\Entities\ProdutoRepository")
  * @ORM\Table(name="produtos")
  */
 class Produto

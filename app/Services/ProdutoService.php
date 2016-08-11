@@ -2,49 +2,65 @@
 
 
 namespace Code\Sistema\Services;
-
-use Code\Sistema\Entities\Produto;
-use Code\Sistema\Mappers\ProdutoMapper;
+use Code\Sistema\Entities\Produto as ProdutoEntity;
+use Doctrine\ORM\EntityManager;
 
 class ProdutoService
 {
-    /**
-     * @var Produto
-     */
-    private $produto;
-    /**
-     * @var ProdutoMapper
-     */
-    private $mapper;
-
+    private $em;
+    private $repository;
     /**
      * ProdutoService constructor.
      */
-    public function __construct(Produto $produto, ProdutoMapper $mapper)
+    public function __construct(EntityManager $em)
     {
-        $this->produto = $produto;
-        $this->mapper = $mapper;
+        $this->em = $em;
+        $this->repository = $this->em->getRepository('Code\Sistema\Entities\Produto');
     }
 
-    /**
-     * @param array $data
-     * @return array
-     */
+
     public function insert(array $data)
     {
-        $produtoEntity = $this->produto;
+        $produtoEntity = new ProdutoEntity();
 
         $produtoEntity->setNome($data['nome'])
             ->setDescricao($data['descricao'])
             ->setValor($data['valor']);
 
-        return $this->mapper->insert($produtoEntity);
+        $this->em->persist($produtoEntity);
+        $this->em->flush();
+        return ['success'=>true];
     }
     public function delete($id){
-        return $this->mapper->delete($id);
+        $produto = $this->em->getReference('Code\Sistema\Entities\Produto', $id);
+        $this->em->remove($produto);
+        $this->em->flush();
+        return ['success'=>true];
 
     }
     public function update($id, $dados){
-        return $this->mapper->update($id, $dados);
-    }    
+        $produto = $this->em->getReference('Code\Sistema\Entities\Produto', $id);
+        $produto->setNome($dados['nome'])
+            ->setDescricao($dados['descricao'])
+            ->setValor($dados['valor']);
+        $this->em->persist($produto);
+        $this->em->flush();
+        return ['success'=>true];
+    }
+
+    public function fetchAll(){
+        $repo = $this->em->getRepository('Code\Sistema\Entities\Produto');
+        return $repo->findAll();
+    }
+
+    public function find($id){
+        $repo = $this->em->getRepository('Code\Sistema\Entities\Produto');
+        $produto = $repo->find($id);
+        return $produto;
+    }
+
+    public function search(array $params){
+
+        return $this->repository->search($params);
+    }
 }

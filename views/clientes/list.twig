@@ -1,0 +1,58 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+<section class="row">
+    <div class="panel panel-cliente">
+        <div class="panel-heading clearfix">
+            <span class="panel-title fontsize-plus">Clientes</span>
+            <form method="get" action="#" class="form-inline form-busca-cliente">
+                <input type="hidden" name="p" value="1">
+                <input type="hidden" name="l" value="{{ clientes.limit }}">
+                <div class="form-group">
+                    <label class="sr-only" for="busca">Busca</label>
+                    <input type="search" class="form-control" id="s" name="s" placeholder="busca">
+                </div>
+
+            </form>
+        </div>
+
+         <div class="panel-body">
+            <table class="table table-condensed">
+                <thead class="cliente-color">
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                </tr>
+                </thead>
+                <tbody>
+               {% for cliente in clientes.result %}
+                <tr data-id="{{ cliente.id }}">
+                    <td><span data-field="id">{{ cliente.id }}</span></td>
+                    <td><span data-field="nome">{{ cliente.nome }}</span></td>
+                    <td><span data-field="email">{{ cliente.email }}</span></td>
+                </tr>
+               {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer">
+            <nav aria-label="Page navigation" class="text-center">
+                <ul class="pagination">
+                    {% if clientes.page > 1 %}
+                    <li><a href="{{ path('cliente/search') }}?s={{ clientes.key }}&l={{ clientes.limit }}&p={{ (clientes.page -1) }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                    {% endif %}
+                    {% for pagination in clientes.pagination %}
+                    <li {% if pagination.active %} class="active" {% endif %}><a href="{{ path('cliente/search') }}?{{ pagination.query }}">{{ loop.index }}</a></li>
+                    {% endfor %}
+                    {% if clientes.page < clientes.pages %}
+                        <li><a href="{{ path('cliente/search') }}?s={{ clientes.key }}&l={{ clientes.limit }}&p={{ (clientes.page +1) }}" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</section><!-- listagem de clientes -->
+{% endblock %}

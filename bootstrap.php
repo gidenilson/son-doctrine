@@ -11,6 +11,7 @@ use Doctrine\ORM\Tools\Setup,
     Doctrine\Common\Annotations\AnnotationRegistry,
     Doctrine\Common\Annotations\AnnotationReader,
     Doctrine\Common\ClassLoader;
+use Symfony\Component\HttpFoundation\Request;
 
 $cache = new Doctrine\Common\Cache\ArrayCache;
 $annotationReader = new Doctrine\Common\Annotations\AnnotationReader;
@@ -57,3 +58,7 @@ $app['debug'] = true;
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/views',
 ));
+
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+Request::enableHttpMethodParameterOverride();

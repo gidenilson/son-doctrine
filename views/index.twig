@@ -1,9 +1,21 @@
-<h1>Silex</h1>
-<ul>
-    <li>
-        <a href='/cliente' >mostra cliente</a>
-    </li>
-    <li>
-        <a href='/produto' >mostra produto</a>
-    </li>
-</ul>
+{% extends "layout.twig" %}
+
+{% block home %}
+    <div class="jumbotron">
+        <h1>Doctrine
+            <small> Projeto fase 2</small>
+        </h1>
+
+        <h2>Requisitos:</h2>
+        <ul>
+            <li><h4>Refatoração</h4></li>
+            <li><h4>Sistema de busca</h4></li>
+            <li><h4>Paginação</h4></li>
+            <li><h4>Utilizar repositories sendo que os métodos podem utilizar queryBuilder ou DQL.</h4></li>
+            <li><h4>Listagem de dados utilizando paginação (os parâmetros podem ser passados via queryString).</h4></li>
+
+        </ul>
+
+        <p class="text-center"><a class="btn btn-primary btn-lg" href="{{ path('cliente/search') }}?s=&p=1&l=10" role="button"><span class="glyphicon glyphicon-log-in"></span> Entrar</a></p>
+    </div>
+{% endblock %}

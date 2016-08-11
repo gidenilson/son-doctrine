@@ -1,0 +1,60 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+<section class="row">
+    <div class="panel panel-produto">
+        <div class="panel-heading clearfix">
+            <span class="panel-title fontsize-plus">Produtos</span>
+            <form method="get" action="#" class="form-inline form-busca-produto">
+                <input type="hidden" name="p" value="1">
+                <input type="hidden" name="l" value="{{ produtos.limit }}">
+                <div class="form-group">
+                    <label class="sr-only" for="busca">Busca</label>
+                    <input type="search" class="form-control" id="s" name="s" placeholder="busca">
+                </div>
+
+            </form>
+        </div>
+
+         <div class="panel-body">
+            <table class="table table-condensed">
+                <thead class="produto-color">
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+               {% for produto in produtos.result %}
+                <tr data-id="{{ produto.id }}">
+                    <td><span data-field="id">{{ produto.id }}</span></td>
+                    <td><span data-field="nome">{{ produto.nome }}</span></td>
+                    <td><span data-field="email">{{ produto.descricao }}</span></td>
+                    <td><span data-field="email">{{ produto.valor }}</span></td>
+                </tr>
+               {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer">
+            <nav aria-label="Page navigation" class="text-center">
+                <ul class="pagination">
+                    {% if produtos.page > 1 %}
+                    <li><a href="{{ path('produto/search') }}?s={{ produtos.key }}&l={{ produtos.limit }}&p={{ (produtos.page -1) }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                    {% endif %}
+                    {% for pagination in produtos.pagination %}
+                    <li {% if pagination.active %} class="active" {% endif %}><a href="{{ path('produto/search') }}?{{ pagination.query }}">{{ loop.index }}</a></li>
+                    {% endfor %}
+                    {% if produtos.page < produtos.pages %}
+                        <li><a href="{{ path('produto/search') }}?s={{ produtos.key }}&l={{ produtos.limit }}&p={{ (produtos.page +1) }}" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</section><!-- listagem de clientes -->
+{% endblock %}
